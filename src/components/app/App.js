@@ -8,7 +8,7 @@ import CharInfo from "../charInfo/CharInfo";
 import decoration from '../../resources/img/vision.png';
 
 const App = () => {
-    const [charId, setCharId] = useState(1010338);
+    const [charId, setCharId] = useState(null);
 
     const getCharacterId = (id) => {
         setCharId(id)
