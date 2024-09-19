@@ -34,19 +34,31 @@ const RandomChar = () => {
     }
     
     const View = () => {
+        const {name, description, thumbnail, homepage, wiki} = state;
+
+        let imgStyle = {'objectFit' : 'cover'};
+        if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+            imgStyle = {'objectFit' : 'contain'};
+        }
+
         return (
             <div className="randomchar__block">
-                <img src={state.thumbnail} alt="Random character" className="randomchar__img"/>
+                <img 
+                    src={thumbnail} 
+                    alt="Random character" 
+                    className="randomchar__img" 
+                    style={imgStyle}
+                />
                 <div className="randomchar__info">
-                    <p className="randomchar__name">{state.name}</p>
+                    <p className="randomchar__name">{name}</p>
                     <p className="randomchar__descr">
-                        {state.description ? state.description : "Описание отстутствует"}
+                        {description ? description : "Описание отстутствует"}
                     </p>
                     <div className="randomchar__btns">
-                        <a href={state.homepage} className="button button__main">
+                        <a href={homepage} className="button button__main">
                             <div className="inner">Homepage</div>
                         </a>
-                        <a href={state.wiki} className="button button__secondary">
+                        <a href={wiki} className="button button__secondary">
                             <div className="inner">Wiki</div>
                         </a>
                     </div>

@@ -12,25 +12,24 @@ const CharList = ({getCharacterId}) => {
     const [characters, setCharacters] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+    const [reqLoad, setReqLoad] = useState(false);
+    const [offset, setOffset] = useState(210);
 
     useEffect(() => {
         onCharListLoaded();
     }, [])
 
     const onCharListLoaded = () => {
-        getAllCharacters()
+
+        setReqLoad(true);
+        getAllCharacters(offset)
             .then(res => {
-                setCharacters(res);
+                setCharacters(prev => ([...prev, ...res]));
                 setLoading(false);
+                setReqLoad(false);
+                setOffset(prev => prev + 9)
             })
             .catch(onError);
-    }
-
-    const onLoadMoreChar = () => {
-        getAllCharacters()
-            .then(res => {
-                setCharacters(...characters, res);
-            })
     }
 
     const onError = () => {
@@ -40,8 +39,8 @@ const CharList = ({getCharacterId}) => {
 
     const renderCharacters = (arr) =>  {
         const items =  arr.map((item) => {
-            let imgStyle = {'objectFit' : 'cover'};
 
+            let imgStyle = {'objectFit' : 'cover'};
             if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
                 imgStyle = {'objectFit' : 'unset'};
             }
@@ -78,7 +77,9 @@ const CharList = ({getCharacterId}) => {
             {contentContent}
 
             <button className="button button__main button__long"
-                    onClick={onLoadMoreChar}>
+                    onClick={onCharListLoaded}
+                    disabled={reqLoad}
+                    >
                 <div className="inner">load more</div>
             </button>
         </div>
