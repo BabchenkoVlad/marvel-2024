@@ -26,6 +26,13 @@ const CharList = ({getCharacterId}) => {
             .catch(onError);
     }
 
+    const onLoadMoreChar = () => {
+        getAllCharacters()
+            .then(res => {
+                setCharacters(...characters, res);
+            })
+    }
+
     const onError = () => {
         setLoading(false);
         setError(true);
@@ -70,7 +77,8 @@ const CharList = ({getCharacterId}) => {
             {loadingContent}
             {contentContent}
 
-            <button className="button button__main button__long">
+            <button className="button button__main button__long"
+                    onClick={onLoadMoreChar}>
                 <div className="inner">load more</div>
             </button>
         </div>

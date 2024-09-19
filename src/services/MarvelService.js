@@ -1,6 +1,7 @@
 const _apiBase = 'https://gateway.marvel.com:443/v1/public/characters';
 const _apiKey = 'apikey=df8b198f5818646e19e0ef00d3d3f1b3';
 
+const offset = 210;
 
 const getResource = async (url) => {
     let res = await fetch(url);
@@ -13,7 +14,7 @@ const getResource = async (url) => {
 }
 
 const getAllCharacters = async () => {
-    const res = await getResource(`${_apiBase}?limit=9&offset=210&${_apiKey}`);
+    const res = await getResource(`${_apiBase}?limit=9&offset=${offset}&${_apiKey}`);
     return res.data.results.map(_transformCharacter);
 }
 
