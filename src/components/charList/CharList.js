@@ -18,11 +18,9 @@ const CharList = ({getCharacterId}) => {
 
     useEffect(() => {
         onCharListLoaded();
-        console.log('useEffect');
     }, [])
 
     const onCharListLoaded = () => {
-        console.log('oncharlistloaded')
         setReqLoad(true);
         getAllCharacters(offset)
             .then(res => {
@@ -42,11 +40,9 @@ const CharList = ({getCharacterId}) => {
     const handleClick = (id) => {
         getCharacterId(id);
         setActive(id);
-        console.log('handleclick')
     }
 
     const renderCharacters = (arr) =>  {
-        console.log('renderChar');
         const items =  arr.map((item) => {
 
             let imgStyle = {'objectFit' : 'cover'};
