@@ -14,13 +14,15 @@ const CharList = ({getCharacterId}) => {
     const [error, setError] = useState(false);
     const [reqLoad, setReqLoad] = useState(false);
     const [offset, setOffset] = useState(210);
+    const [active, setActive] = useState(null);
 
     useEffect(() => {
         onCharListLoaded();
+        console.log('useEffect');
     }, [])
 
     const onCharListLoaded = () => {
-
+        console.log('oncharlistloaded')
         setReqLoad(true);
         getAllCharacters(offset)
             .then(res => {
@@ -37,19 +39,32 @@ const CharList = ({getCharacterId}) => {
         setError(true);
     }
 
+    const handleClick = (id) => {
+        getCharacterId(id);
+        setActive(id);
+        console.log('handleclick')
+    }
+
     const renderCharacters = (arr) =>  {
+        console.log('renderChar');
         const items =  arr.map((item) => {
 
             let imgStyle = {'objectFit' : 'cover'};
             if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
                 imgStyle = {'objectFit' : 'unset'};
             }
+
+            let classNameActive = "char__item";
+            if (active === item.id) {
+                classNameActive = "char__item char__item_selected";
+            }
             
             return (
                 <li 
-                    className="char__item"
+                    className={classNameActive}
                     key={item.id}
-                    onClick={() => getCharacterId(item.id)}>
+                    onClick={() => handleClick(item.id)}
+                    >
                         <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
                         <div className="char__name">{item.name}</div>
                 </li>
