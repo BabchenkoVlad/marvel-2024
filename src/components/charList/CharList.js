@@ -3,38 +3,32 @@ import { useState, useEffect } from 'react';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import { getAllCharacters } from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 
 import './charList.scss';
 
 
 const CharList = ({getCharacterId}) => {
     const [characters, setCharacters] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
     const [reqLoad, setReqLoad] = useState(false);
     const [offset, setOffset] = useState(210);
     const [active, setActive] = useState(null);
 
+    const {loading, error, getAllCharacters} = useMarvelService();
+
     useEffect(() => {
-        onCharListLoaded();
+        onCharListLoaded(offset, true);
     }, [])
 
-    const onCharListLoaded = () => {
-        setReqLoad(true);
+    const onCharListLoaded = (offset, initial) => {
+        initial ? setReqLoad(false) : setReqLoad(true);
+        
         getAllCharacters(offset)
             .then(res => {
                 setCharacters(prev => ([...prev, ...res]));
-                setLoading(false);
                 setReqLoad(false);
                 setOffset(prev => prev + 9)
             })
-            .catch(onError);
-    }
-
-    const onError = () => {
-        setLoading(false);
-        setError(true);
     }
 
     const handleClick = (id) => {
@@ -77,15 +71,15 @@ const CharList = ({getCharacterId}) => {
     const charCards = renderCharacters(characters);
 
     const errorContent = error ? <ErrorMessage/> : null;
-    const loadingContent = loading ? <Spinner/> : null;
-    const contentContent = !(loading || error) ? charCards : null;
+    const loadingContent = loading && !reqLoad ? <Spinner/> : null;
+    // const contentContent = !(loading || error) ? charCards : null;
 
     return (
         <div className="char__list">
 
             {errorContent}
             {loadingContent}
-            {contentContent}
+            {charCards}
 
             <button className="button button__main button__long"
                     onClick={onCharListLoaded}

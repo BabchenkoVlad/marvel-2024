@@ -5,13 +5,13 @@ import './charInfo.scss';
 import Skeleton from '../skeleton/Skeleton'
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import { getCharacter } from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 
 
 const CharInfo = ({setCharacterId}) => {
     const [state, setState] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+
+    const {loading, error, getCharacter, clearError} = useMarvelService();
     
     const onCharListLoaded = () => {
 
@@ -19,24 +19,16 @@ const CharInfo = ({setCharacterId}) => {
             return;
         }
 
-        setLoading(true);
-
+        clearError();
         getCharacter(setCharacterId)
             .then(res => {
                 setState(res);
-                setLoading(false);
             })
-            .catch(onError);
     }
 
     useEffect(() => {
         onCharListLoaded();
     }, [setCharacterId])
-
-    const onError = () => {
-        setLoading(false);
-        setError(true);
-    }
 
     const View = () => {
         const {name, description, thumbnail, homepage, wiki, comics} = state;
