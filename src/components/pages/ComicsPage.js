@@ -1,11 +1,24 @@
-import ComicsList from "../comicsList/ComicsList";
+import { useState } from "react";
+
+import ComicsList from "../comicList/ComicsList";
 import AppBanner from "../appBanner/AppBanner";
 
+import ErrorBoundary from "../errorBoundary/ErrorBoundary";
+
+
 const ComicsPage = () => {
+    const [comicId, setComicId] = useState(null);
+
+    const getComicId = (id) => {
+        setComicId(id)
+    }
+    
     return (
         <>
-            <AppBanner/>
-            <ComicsList/>
+            <ErrorBoundary>
+                <AppBanner/>
+                <ComicsList getComicId={getComicId} />
+            </ErrorBoundary>
         </>
     )
 }

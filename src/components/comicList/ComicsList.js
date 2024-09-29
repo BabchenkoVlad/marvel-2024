@@ -15,27 +15,19 @@ const ComicsList = ({getComicId}) => {
     const {loading, error, getAllComics} = useMarvelService();
 
     useEffect(() => {
-        initialLoading(true);
-        onCharListLoaded(offset);
+        onCharListLoaded(offset, true);
     }, [])
 
-    const initialLoading = (initial) => {
+    const onCharListLoaded = (offset, initial) => {
         initial ? setReqLoad(false) : setReqLoad(true);
-    }
-
-    const onCharListLoaded = () => { 
+        
         getAllComics(offset)
             .then(res => {
                 setComics(prev => ([...prev, ...res]));
                 setReqLoad(false);
-                setOffset(offset + 8)
+                setOffset(prev => prev + 9)
             })
     }
-
-
-
-    console.log(comics);
-    console.log(offset);
 
     const renderCharacters = (arr) =>  {
         const items =  arr.map((item) => {
@@ -74,7 +66,7 @@ const ComicsList = ({getComicId}) => {
             {comicCards}
 
             <button className="button button__main button__long"
-                    onClick={onCharListLoaded}
+                    onClick={() => onCharListLoaded(offset)}
                     disabled={reqLoad}
                     >
                 <div className="inner">load more</div>
