@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 
 import './charInfo.scss';
 
@@ -12,7 +11,6 @@ import useMarvelService from '../../services/MarvelService';
 const CharInfo = ({setCharacterId}) => {
     const [state, setState] = useState(null);
     
-
     const {loading, error, getCharacter, clearError} = useMarvelService();
     
     const onCharListLoaded = () => {
