@@ -13,12 +13,12 @@ const useMarvelService = () => {
         const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
         console.log(res);
         return res.data.results.map(_transformCharacter);
-    }
+    };
 
     const getCharacter = async (id) => {
         const res = await request(`${_apiBase}characters/${id}?${_apiKey}`);
         return _transformCharacter(res.data.results[0]);
-    }
+    };
 
     const getAllComics = async (offset) => {
 		const res = await request(`${_apiBase}comics?limit=8&offset=${offset}&${_apiKey}`, true, false);
@@ -27,10 +27,10 @@ const useMarvelService = () => {
 	};
 
     const getComic = async (id) => {
-        const res = await request(`${_apiBase}comic/${id}?${_apiKey}`);
+        const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
 
         return _transformComic(res.data.results[0]);
-    }
+    };
 
     const _transformCharacter = (char) => {
         return {
@@ -44,7 +44,7 @@ const useMarvelService = () => {
             wiki: char.urls[1].url,
             comics: char.comics.items
         }
-    }
+    };
 
     const _transformComic = (comic) => {
         return {
@@ -60,7 +60,7 @@ const useMarvelService = () => {
 				: "No information about the number of pages",
             language: comic.textObjects[0]?.language || "en-us",
         }
-    }
+    };
 
     return {loading, 
             error, 
